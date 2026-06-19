@@ -1,10 +1,10 @@
 {
-  "id": "/",
+  "id": "/lenderappclients/",
   "name": "Lender App",
   "short_name": "Lender App",
   "description": "Professional client loan portal for managing loans and repayments.",
-  "start_url": "/index.html",
-  "scope": "/",
+  "start_url": "/lenderappclients/index.html",
+  "scope": "/lenderappclients/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#ffffff",

@@ -1,12 +1,12 @@
-const CACHE = 'lender-app-v1';
+const CACHE = 'lender-app-v2';
 const SHELL = [
-  './',
-  './index.html',
-  './index.css',
-  './index.js',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+  '/lenderappclients/',
+  '/lenderappclients/index.html',
+  '/lenderappclients/index.css',
+  '/lenderappclients/index.js',
+  '/lenderappclients/manifest.json',
+  '/lenderappclients/icon-192.png',
+  '/lenderappclients/icon-512.png'
 ];
 
 self.addEventListener('install', e => {
