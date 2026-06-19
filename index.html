@@ -13,9 +13,11 @@
   <meta name="background-color" content="#ffffff">
 
   <!-- PWA: Icons -->
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-  <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512x512.png">
 
   <!-- PWA: iOS standalone support -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -24,7 +26,7 @@
 
   <!-- PWA: Windows tile -->
   <meta name="msapplication-TileColor" content="#2563eb">
-  <meta name="msapplication-TileImage" content="icon-192.png">
+  <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,6 +35,30 @@
   
   <!-- CSS Stylesheet -->
   <link rel="stylesheet" href="index.css">
+  <style>
+    #install-hint {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 16px;
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+    #install-hint svg {
+      width: 16px;
+      height: 16px;
+      stroke: #2563eb;
+    }
+    #install-link {
+      color: #2563eb;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    #install-link:hover {
+      text-decoration: underline;
+    }
+  </style>
   
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -77,6 +103,11 @@
 
 
       </form>
+
+      <div class="auth-install-hint" id="install-hint">
+        <i data-lucide="download"></i>
+        <a href="#" id="install-link">Download App</a>
+      </div>
     </div>
   </div>
 
@@ -567,3 +598,29 @@
   </script>
 </body>
 </html>
+<script>
+  // PWA install prompt
+  let deferredPrompt;
+  const installHint = document.getElementById('install-hint');
+  const installLink = document.getElementById('install-link');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installHint.style.display = 'flex';
+  });
+
+  installLink.addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    installHint.style.display = 'none';
+  });
+
+  window.addEventListener('appinstalled', () => {
+    installHint.style.display = 'none';
+    deferredPrompt = null;
+  });
+</script>
