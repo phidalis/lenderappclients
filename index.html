@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-font="sans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lender App - Professional Client Loan Portal</title>
+  <!-- SEO & Meta -->
+  <meta name="description" content="A simple yet professional client-side Lender App featuring responsive layouts, theme configurations, loan applications, and repayment management.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="index.css">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- ================= AUTH CONTAINER ================= -->
+  <div id="auth-container" class="page-container active">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="logo-badge">
+          <i data-lucide="landmark"></i>
+        </div>
+        <h1>Lender app</h1>
+        <p>Access your professional loan portal</p>
+      </div>
+
+      <form id="client-login-form">
+        <div class="form-group">
+          <label for="login-id">National ID / Account ID</label>
+          <div class="input-wrapper">
+            <i data-lucide="user" class="input-icon"></i>
+            <input type="text" id="login-id" placeholder="Enter ID (e.g. 42111101)" required autocomplete="username">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="login-pin">Access PIN</label>
+          <div class="input-wrapper">
+            <i data-lucide="lock" class="input-icon"></i>
+            <input type="password" id="login-pin" placeholder="Enter PIN (e.g.1234)" required maxlength="8" autocomplete="current-password">
+            <button type="button" class="btn-icon-toggle toggle-pin-visibility" aria-label="Toggle PIN Visibility">
+              <i data-lucide="eye" class="pin-eye-icon"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">
+          <span>Sign In Securely</span>
+          <i data-lucide="arrow-right"></i>
+        </button>
+
+
+      </form>
+    </div>
+  </div>
+
+  <!-- NOTIFICATION Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- ================= CLIENT PORTAL CONTAINER ================= -->
+  <div id="client-container" class="page-container">
+    
+    <!-- TOP NAVBAR -->
+    <header class="top-navbar">
+      <div class="nav-left">
+        <!-- Theme Controls -->
+        <div class="theme-quick-switch">
+          <button class="theme-btn" data-set-theme="light" title="Light Theme">
+            <i data-lucide="sun"></i>
+          </button>
+          <button class="theme-btn" data-set-theme="dark" title="Dark Theme">
+            <i data-lucide="moon"></i>
+          </button>
+          <button class="theme-btn" data-set-theme="warm" title="Warm Theme">
+            <i data-lucide="coffee"></i>
+          </button>
+        </div>
+        <!-- Settings Trigger -->
+        <button class="header-btn-settings" id="client-settings-trigger" title="Text & Styling Settings">
+          <i data-lucide="settings-2"></i>
+        </button>
+      </div>
+      
+      <div class="nav-right">
+        <!-- Logo -->
+        <div class="app-logo">
+          <span class="logo-text">Lender app</span>
+          <i data-lucide="landmark"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN APP SCREEN / VIEWPORT -->
+    <main class="main-content">
+      
+      <!-- 1. HOME VIEW -->
+      <section id="client-view-home" class="app-view active">
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <h2>Welcome back, <span id="client-display-name">ID 42112304</span></h2>
+            <p>Here is your current financial standing</p>
+          </div>
+          <button class="btn-logout quick-logout" title="Sign Out">
+            <i data-lucide="log-out"></i>
+            <span>Sign Out</span>
+          </button>
+        </div>
+
+        <!-- Metric Grid -->
+        <div class="metrics-grid">
+          <div class="metric-card primary-gradient">
+            <div class="card-header">
+              <span>Total Active Debt</span>
+              <i data-lucide="dollar-sign"></i>
+            </div>
+            <div class="card-value" id="client-metric-active-debt">KSh 0.00</div>
+            <div class="card-footer">
+              <span id="client-metric-loans-count">0 Active Loans</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="card-header">
+              <span>Your Borrowing Limit</span>
+              <i data-lucide="trending-up"></i>
+            </div>
+            <div class="card-value" id="client-metric-loan-limit">KSh 10,000.00</div>
+            <div class="card-footer text-success">
+              <i data-lucide="arrow-up-right"></i>
+              <span>Available for immediate withdrawal</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="card-header">
+              <span>Next Due Amount</span>
+              <i data-lucide="calendar"></i>
+            </div>
+            <div class="card-value" id="client-metric-next-due">KSh 0.00</div>
+            <div class="card-footer" id="client-metric-due-date">No repayment pending</div>
+          </div>
+        </div>
+
+        <!-- Progress and Action Grid -->
+        <div class="dashboard-details-grid">
+          <!-- Loan Payoff Progress -->
+          <div class="dashboard-card payoff-card">
+            <h3>Repayment Progress</h3>
+            <div class="progress-ring-container">
+              <svg class="progress-ring" width="160" height="160">
+                <circle class="progress-ring__circle-bg" stroke="rgba(0,0,0,0.05)" stroke-width="12" fill="transparent" r="70" cx="80" cy="80"/>
+                <circle class="progress-ring__circle" id="client-repayment-progress-ring" stroke="var(--primary-color)" stroke-width="12" fill="transparent" r="70" cx="80" cy="80"/>
+              </svg>
+              <div class="progress-ring-label">
+                <span id="client-progress-percent" class="percent-val">0%</span>
+                <span class="percent-sub">repaid</span>
+              </div>
+            </div>
+            <div class="progress-text-summary">
+              <p>Paid: <strong id="client-progress-paid-amt">KSh 0.00</strong> of <strong id="client-progress-total-amt">KSh 0.00</strong></p>
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="dashboard-card transactions-card">
+            <div class="card-title-bar">
+              <h3>Recent Loan Activity</h3>
+              <i data-lucide="clock"></i>
+            </div>
+            <div class="transaction-list" id="client-dashboard-transactions">
+              <div class="empty-state">
+                <i data-lucide="clipboard-list"></i>
+                <p>No recent activity detected.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. LOANS VIEW -->
+      <section id="client-view-loans" class="app-view">
+        <div class="view-header">
+          <h1>Request a New Loan</h1>
+          <p>Select your desired amount and repayment term below.</p>
+        </div>
+
+        <div class="loan-application-grid">
+          <!-- Loan Config Form -->
+          <form id="client-loan-application-form" class="dashboard-card">
+            <div class="form-group">
+              <div class="slider-label-row">
+                <label for="client-loan-amount">Desired Amount</label>
+                <span class="value-display" id="client-loan-amount-val">KSh 5,000</span>
+              </div>
+              <input type="range" id="client-loan-amount" min="500" max="10000" step="500" value="5000" class="range-slider">
+              <div class="slider-bounds">
+                <span>Min: KSh 500</span>
+                <span>Max: <span id="client-apply-max-limit">KSh 10,000</span></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="client-loan-type">Loan Type</label>
+              <select id="client-loan-type" required>
+                <option value="" disabled selected>Select a loan type...</option>
+              </select>
+              <span class="help-text" id="client-loan-type-help">Select a loan type to see terms and interest rate.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="client-loan-purpose">Purpose of Loan</label>
+              <select id="client-loan-purpose" required>
+                <option value="" disabled selected>Select a purpose...</option>
+                <option value="business">Business Expansion / Startup</option>
+                <option value="education">Education Fees</option>
+                <option value="medical">Medical Expenses</option>
+                <option value="home">Home Renovation</option>
+                <option value="debt">Debt Consolidation</option>
+                <option value="personal">Personal / Other Emergencies</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+              <span>Submit Loan Application</span>
+              <i data-lucide="check-circle-2"></i>
+            </button>
+          </form>
+
+          <!-- Dynamic Interest Summary Panel -->
+          <div class="dashboard-card summary-card">
+            <h3>Repayment Estimation</h3>
+            
+            <div class="summary-details">
+              <div class="summary-row">
+                <span>Principal Amount:</span>
+                <strong id="client-sum-principal">KSh 5,000.00</strong>
+              </div>
+              <div class="summary-row">
+                <span>Interest Rate applied:</span>
+                <strong id="client-sum-rate">5.0%</strong>
+              </div>
+              <div class="summary-row border-bottom">
+                <span>Total Interest Cost:</span>
+                <strong class="text-danger" id="client-sum-interest">KSh 250.00</strong>
+              </div>
+              <div class="summary-row highlight">
+                <span>Total Repayment:</span>
+                <strong id="client-sum-total">KSh 5,250.00</strong>
+              </div>
+              <div class="summary-row monthly-row">
+                <span>Estimated Monthly Payment:</span>
+                <div class="monthly-badge">
+                  <span id="client-sum-monthly">KSh 1,750.00</span>
+                  <span class="per-month">/ month</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="summary-notice">
+              <i data-lucide="shield-alert"></i>
+              <p>Applications are approved instantly based on your remaining borrowing credit limit. Local state will be saved instantly.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Loans List -->
+        <div class="dashboard-card history-card">
+          <h3>Your Applied Loans</h3>
+          <div class="table-responsive">
+            <table class="loans-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Type</th>
+                  <th>Amount</th>
+                  <th>Purpose</th>
+                  <th>Interest</th>
+                  <th>Total Repayable</th>
+                  <th>Term</th>
+                  <th>Remaining</th>
+                  <th>Status</th>
+                  <th>Reason</th>
+                </tr>
+              </thead>
+              <tbody id="client-loans-history-body">
+                <tr>
+                  <td colspan="10" class="text-center text-muted py-4">No loan records found.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. REPAYMENT VIEW -->
+      <section id="client-view-repayment" class="app-view">
+        <div class="view-header">
+          <h1>Loan Repayment Portal</h1>
+          <p>Pay off your active loans to restore your limit and maintain good credit.</p>
+        </div>
+
+        <div class="repayment-layout-grid">
+          <!-- Make Repayment Form -->
+          <div class="dashboard-card">
+            <h3>Submit a Repayment</h3>
+            <form id="client-repayment-form">
+              <div class="form-group">
+                <label for="client-repay-loan-select">Select Active Loan</label>
+                <select id="client-repay-loan-select" required>
+                  <option value="" disabled selected>Choose a loan to pay...</option>
+                </select>
+              </div>
+
+              <span class="help-text" id="client-repay-max-help" style="display:block;margin-bottom:12px;">Select a loan to see your outstanding balance.</span>
+
+              <div class="form-group">
+                <label>Payment Type</label>
+                <div class="payment-methods-grid">
+                  <label class="pay-method-option">
+                    <input type="radio" name="client-repay-type" value="full" checked>
+                    <span class="method-box">
+                      <i data-lucide="check-circle-2"></i>
+                      <span>Full Payment</span>
+                    </span>
+                  </label>
+                  <label class="pay-method-option">
+                    <input type="radio" name="client-repay-type" value="partial">
+                    <span class="method-box">
+                      <i data-lucide="split"></i>
+                      <span>Partial Payment</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Only visible when Partial is selected -->
+              <div class="form-group" id="client-partial-amount-row" style="display:none;">
+                <label for="client-repay-amount">Partial Amount (KSh)</label>
+                <div class="input-wrapper">
+                  <i data-lucide="coins" class="input-icon"></i>
+                  <input type="number" id="client-repay-amount" placeholder="0.00" min="1" step="any">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Mock Payment Method</label>
+                <div class="payment-methods-grid">
+                  <label class="pay-method-option">
+                    <input type="radio" name="client-pay-method" value="wallet" checked>
+                    <span class="method-box">
+                      <i data-lucide="wallet"></i>
+                      <span>Personal Bank Account</span>
+                    </span>
+                  </label>
+                  <label class="pay-method-option">
+                    <input type="radio" name="client-pay-method" value="card">
+                    <span class="method-box">
+                      <i data-lucide="credit-card"></i>
+                      <span>Debit/Credit Card</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-success btn-block" id="client-btn-submit-repay" disabled>
+                <span>Process Repayment</span>
+                <i data-lucide="sparkles"></i>
+              </button>
+            </form>
+          </div>
+
+          <!-- Repayment Status/Info -->
+          <div class="dashboard-card status-card">
+            <h3>Repayment Log</h3>
+            <div class="repayment-history" id="client-repayments-log-list">
+              <div class="empty-state">
+                <i data-lucide="history"></i>
+                <p>No repayments logged yet.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. SETTINGS VIEW -->
+      <section id="client-view-settings" class="app-view">
+        <div class="view-header">
+          <h1>Account Settings</h1>
+          <p>Manage your account security, notifications, and credentials.</p>
+        </div>
+
+        <div class="settings-grid">
+          <!-- Security Settings -->
+          <div class="dashboard-card">
+            <div class="setting-title-row">
+              <i data-lucide="shield-check" class="text-primary"></i>
+              <h3>Security Features</h3>
+            </div>
+            
+            <!-- Mock Biometric Toggle -->
+            <div class="setting-row">
+              <div class="setting-text">
+                <span class="setting-name">Simulate Biometric Login</span>
+                <span class="setting-desc">Prompt for FaceID/Fingerprint scan when logging in.</span>
+              </div>
+              <label class="switch-toggle">
+                <input type="checkbox" id="client-setting-biometrics">
+                <span class="slider-round"></span>
+              </label>
+            </div>
+
+            <!-- Two-Factor Authentication -->
+            <div class="setting-row">
+              <div class="setting-text">
+                <span class="setting-name">Mock 2-Factor Authentication</span>
+                <span class="setting-desc">Enforce standard SMS verification code on login.</span>
+              </div>
+              <label class="switch-toggle">
+                <input type="checkbox" id="client-setting-2fa">
+                <span class="slider-round"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Credentials Management -->
+          <div class="dashboard-card">
+            <div class="setting-title-row">
+              <i data-lucide="key" class="text-primary"></i>
+              <h3>Change Access PIN</h3>
+            </div>
+
+            <form id="client-change-pin-form">
+              <div class="form-group">
+                <label for="client-current-pin">Current Access PIN</label>
+                <input type="password" id="client-current-pin" placeholder="Enter current PIN" required maxlength="8">
+              </div>
+
+              <div class="form-group">
+                <label for="client-new-pin">New Access PIN (4-8 digits)</label>
+                <input type="password" id="client-new-pin" placeholder="Enter new PIN" required maxlength="8">
+              </div>
+
+              <div class="form-group">
+                <label for="client-confirm-pin">Confirm New PIN</label>
+                <input type="password" id="client-confirm-pin" placeholder="Re-type new PIN" required maxlength="8">
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block" style="margin-top: 10px;">
+                <span>Update Access PIN</span>
+                <i data-lucide="save"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+      
+    </main>
+
+    <!-- ================= FLOATING BOTTOM NAVIGATION ================= -->
+    <nav class="floating-bottom-nav">
+      <ul class="nav-links-list">
+        <li class="nav-item">
+          <button class="nav-link active" data-target-view="client-view-home">
+            <i data-lucide="home"></i>
+            <span class="nav-label">Home</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" data-target-view="client-view-loans">
+            <i data-lucide="credit-card"></i>
+            <span class="nav-label">Loans</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" data-target-view="client-view-repayment">
+            <i data-lucide="wallet"></i>
+            <span class="nav-label">Repayment</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" data-target-view="client-view-settings">
+            <i data-lucide="settings"></i>
+            <span class="nav-label">Settings</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- ================= GLOBAL DESIGN SYSTEM SETTINGS MODAL ================= -->
+  <div id="global-settings-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-title">Typography & Sizing Configuration</div>
+      <div class="modal-desc">Customize typography layout settings across the Lender application.</div>
+      
+      <div style="width: 100%; display: flex; flex-direction: column; gap: 20px; text-align: left;">
+        
+        <!-- Font Selector -->
+        <div class="form-group">
+          <label for="font-select">Font Style Selection</label>
+          <select id="font-select" class="setting-input" style="padding-left: 16px;">
+            <option value="sans">Modern Sans-Serif (Plus Jakarta Sans)</option>
+            <option value="serif">Classic Editorial Serif (Playfair Display)</option>
+            <option value="mono">Developer Monospace (JetBrains Mono)</option>
+          </select>
+        </div>
+
+        <!-- Font Scale -->
+        <div class="form-group">
+          <label>Font Size Modifier</label>
+          <div class="font-scale-controls">
+            <button class="scale-btn" data-scale="small">A-</button>
+            <button class="scale-btn active" data-scale="medium">Normal</button>
+            <button class="scale-btn" data-scale="large">A+</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-block" id="btn-close-global-settings">Apply Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="index.js"></script>
+</body>
+</html>
