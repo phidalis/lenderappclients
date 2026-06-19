@@ -6,6 +6,25 @@
   <title>Lender App - Professional Client Loan Portal</title>
   <!-- SEO & Meta -->
   <meta name="description" content="A simple yet professional client-side Lender App featuring responsive layouts, theme configurations, loan applications, and repayment management.">
+
+  <!-- PWA: Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="background-color" content="#ffffff">
+
+  <!-- PWA: Icons -->
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+
+  <!-- PWA: iOS standalone support -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Lender App">
+
+  <!-- PWA: Windows tile -->
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="msapplication-TileImage" content="icon-192.png">
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -531,5 +550,20 @@
   </div>
 
   <script type="module" src="index.js"></script>
+
+  <!-- PWA: Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then((registration) => {
+            console.log('[PWA] Service worker registered:', registration.scope);
+          })
+          .catch((error) => {
+            console.error('[PWA] Service worker registration failed:', error);
+          });
+      });
+    }
+  </script>
 </body>
 </html>
